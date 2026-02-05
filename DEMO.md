@@ -57,7 +57,7 @@ skill_bdd/
 #### 1.1 展示业务需求
 
 **旁白**:
-> "假设星巴克需要实现一个菜单价格批量更新功能，运营人员需要能够快速调整不同区域的饮品价格。"
+> "假设咖啡公司需要实现一个菜单价格批量更新功能，运营人员需要能够快速调整不同区域的饮品价格。"
 
 **操作**:
 ```bash
@@ -270,7 +270,7 @@ mvn test -Dtest=BddTestRunner
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
-[INFO] Running com.starbucks.menu.test.bdd.BddTestRunner
+[INFO] Running com.company.menu.test.bdd.BddTestRunner
 
 功能: 菜单价格批量更新
 

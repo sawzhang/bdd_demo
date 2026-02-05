@@ -24,9 +24,9 @@
 **1. 创建场景上下文类**
 
 ```java
-package com.starbucks.menu.test.bdd.context;
+package com.company.menu.test.bdd.context;
 
-import com.starbucks.menu.domain.PriceChangeOrder;
+import com.company.menu.domain.PriceChangeOrder;
 import org.springframework.stereotype.Component;
 import org.springframework.context.annotation.Scope;
 
@@ -134,7 +134,7 @@ public class PriceUpdateSteps {
 **3. 使用 Hooks 清理状态**
 
 ```java
-package com.starbucks.menu.test.bdd.hooks;
+package com.company.menu.test.bdd.hooks;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -243,7 +243,7 @@ public void 状态历史应记录(String expectedHistory) {
 #### 状态构建器实现
 
 ```java
-package com.starbucks.menu.test.bdd.builders;
+package com.company.menu.test.bdd.builders;
 
 /**
  * 价格变更单测试构建器

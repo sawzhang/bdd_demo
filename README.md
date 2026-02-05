@@ -1,4 +1,4 @@
-# 星巴克 SDD + BDD 融合实践 Demo
+# 咖啡公司 SDD + BDD 融合实践 Demo
 
 ## 项目概述
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **BDD (Behavior Driven Development) + SDD (Skills Driven Development)** fusion demo project for Starbucks R&D team. The core workflow is:
+This is a **BDD (Behavior Driven Development) + SDD (Skills Driven Development)** fusion demo project for Company R&D team. The core workflow is:
 
 ```
 Business Requirements → BDD Scenarios (Gherkin) → AI Skill Analysis → Auto-Generated Code + Tests → Validation
@@ -51,7 +51,7 @@ src/test/
 
 When BDD scenarios involve external services (APIs, databases, message queues):
 
-- **Integration interfaces** defined in `src/main/java/com/starbucks/menu/integration/`
+- **Integration interfaces** defined in `src/main/java/com/company/menu/integration/`
 - **Mock in tests** using `@MockBean` in step definitions
 - **Test isolation** - each scenario gets clean mocks via `@Before` hooks
 - **See**: `docs/bdd-external-dependencies-solutions.md` for complete guide
@@ -174,7 +174,7 @@ Services include rollback mechanisms referenced in BDD scenarios:
 
 ## System Integration Points
 
-This demo project integrates with three Starbucks systems (conceptual):
+This demo project integrates with three Company systems (conceptual):
 
 - **OMS** (Order Management System): Order creation/cancellation flows
 - **VIA** (Fulfillment System): Store assignment and delivery tracking
@@ -257,7 +257,7 @@ This is a **demonstration project** showing:
 - How BDD scenarios drive development
 - How AI can generate code from business requirements
 - How to maintain requirements-code-test synchronization
-- Integration patterns for Starbucks' OMS/VIA/MOD systems
+- Integration patterns for Company' OMS/VIA/MOD systems
 
 For full context, see:
 - `DEMO.md` - Complete demonstration script

@@ -5,12 +5,12 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.starbucks</groupId>
+    <groupId>com.company</groupId>
     <artifactId>skill-bdd-demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Starbucks BDD + SDD Demo</name>
+    <name>Company BDD + SDD Demo</name>
     <description>BDD and Skills Driven Development fusion demo project</description>
 
     <properties>

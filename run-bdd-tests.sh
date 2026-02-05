@@ -73,7 +73,7 @@ cat << 'EOF'
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
-[INFO] Running com.starbucks.menu.test.bdd.BddTestRunner
+[INFO] Running com.company.menu.test.bdd.BddTestRunner
 
 功能: 菜单价格批量更新
 
