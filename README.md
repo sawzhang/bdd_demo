@@ -151,6 +151,10 @@ BDD场景 → AI分析 → OpenAPI契约 → 代码生成 → 测试验证
 - [README.md](README.md) - 项目主文档（本文档）
 - [CLAUDE.md](CLAUDE.md) - Claude Code 协作指南
 
+### 🎯 方法论与价值（推荐阅读）
+- [**BDD + AI Native 价值分析**](docs/bdd-ai-native-analysis.md) - 深度剖析 BDD 原理与 AI 时代的价值
+- [**BDD + AI Native 架构设计**](docs/bdd-ai-native-architecture.md) - 完整的技术架构与实施路径
+
 ### 架构与演示
 - [架构文档](docs/architecture.md) - 系统架构设计
 - [演示文档](docs/demo.md) - 完整演示说明
