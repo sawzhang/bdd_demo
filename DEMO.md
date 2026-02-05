@@ -414,7 +414,7 @@ echo "✅ 新场景测试通过!"
 
 ### 试点建议
 
-1. **选择试点模块**: MOD 定制验证模块
+1. **选择试点模块**: Customization 定制验证模块
 2. **编写核心场景**: 5-10 个关键业务场景
 3. **构建第一个 Skill**: Modifier Validation Skill
 4. **度量效果**: 对比传统开发 vs SDD+BDD

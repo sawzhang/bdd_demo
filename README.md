@@ -17,8 +17,8 @@ skill_bdd/
 ├── README.md                          # 本文档
 ├── skills/                            # Skills 定义目录
 │   ├── menu-pricing/                  # 菜单价格管理 Skill
-│   ├── order-management/              # 订单管理 Skill (FUJI)
-│   └── modifier-validation/           # 定制验证 Skill (MOD)
+│   ├── order-management/              # 订单管理 Skill (OMS)
+│   └── modifier-validation/           # 定制验证 Skill (Customization)
 ├── src/                               # 生成的源代码
 │   ├── main/
 │   │   ├── controller/
@@ -91,9 +91,9 @@ mvn test -Dtest=KarateRunner
 **BDD 场景**: `behaviors/order/create_order.feature`
 **生成代码**: 完整的订单处理链路
 
-### 场景3: 定制验证 (Modifier Validation - MOD)
+### 场景3: 定制验证 (Modifier Validation - Customization)
 
-**业务背景**: MOD系统需要验证饮品定制组合的有效性
+**业务背景**: Customization系统需要验证饮品定制组合的有效性
 
 **BDD 场景**: `behaviors/customization/validate_modifier.feature`
 **生成代码**: 定制规则引擎
@@ -140,7 +140,7 @@ BDD场景 → AI分析 → OpenAPI契约 → 代码生成 → 测试验证
 
 ## 下一步
 
-1. **试点模块**: 从 MOD 定制模块开始
+1. **试点模块**: 从 Customization 定制模块开始
 2. **场景库建设**: 创建 5-10 个核心业务场景
 3. **团队培训**: BDD 编写规范和 Skill 使用
 4. **度量优化**: 持续收集效率提升数据

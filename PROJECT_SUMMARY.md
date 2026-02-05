@@ -50,7 +50,7 @@ skill_bdd/
 │   │   ├── behaviors/                 # 场景模板
 │   │   └── templates/                 # 代码模板
 │   ├── order-management/              # 预留：OMS Skill
-│   └── modifier-validation/           # 预留：MOD Skill
+│   └── modifier-validation/           # 预留：Customization Skill
 │
 ├── src/
 │   ├── main/                          # 💻 业务代码
@@ -248,7 +248,7 @@ cp behaviors/menu/price_update.feature behaviors/menu/my_feature.feature
 
 ### 试点准备
 
-1. **选择模块**: MOD 定制验证模块
+1. **选择模块**: Customization 定制验证模块
 2. **编写场景**: 5-10 个核心场景
 3. **生成代码**: 使用 Claude Code
 4. **度量效果**: 对比传统开发
@@ -257,7 +257,7 @@ cp behaviors/menu/price_update.feature behaviors/menu/my_feature.feature
 
 1. **更多 Skill**
    - `order-management` (OMS 订单)
-   - `modifier-validation` (MOD 定制)
+   - `modifier-validation` (Customization 定制)
    - `fulfillment` (VIA 履约)
 
 2. **完善测试**

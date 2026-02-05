@@ -262,7 +262,7 @@ BDD: behaviors/fulfillment/*.feature
 Skill: fulfillment
 ```
 
-### MOD (定制系统)
+### Customization (定制系统)
 ```
 BDD: behaviors/customization/*.feature
 Skill: modifier-validation

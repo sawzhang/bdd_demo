@@ -178,7 +178,7 @@ This demo project integrates with three Company systems (conceptual):
 
 - **OMS** (Order Management System): Order creation/cancellation flows
 - **VIA** (Fulfillment System): Store assignment and delivery tracking
-- **MOD** (Customization System): Modifier validation logic
+- **Customization** (Customization System): Modifier validation logic
 
 Each system has its own:
 - BDD scenario directory in `behaviors/`
@@ -257,7 +257,7 @@ This is a **demonstration project** showing:
 - How BDD scenarios drive development
 - How AI can generate code from business requirements
 - How to maintain requirements-code-test synchronization
-- Integration patterns for Company' OMS/VIA/MOD systems
+- Integration patterns for Company' OMS/VIA/Customization systems
 
 For full context, see:
 - `DEMO.md` - Complete demonstration script
