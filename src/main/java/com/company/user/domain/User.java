@@ -64,6 +64,15 @@ public class User {
     private String verificationToken;
 
     /**
+     * 注册IP地址
+     *
+     * 对应 BDD 场景: "防止恶意注册"
+     * - Given: IP地址在1分钟内已注册3次
+     * - Then: 注册应该被阻止
+     */
+    private String registrationIp;
+
+    /**
      * 用户状态枚举
      */
     public enum UserStatus {

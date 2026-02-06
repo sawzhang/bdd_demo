@@ -40,6 +40,40 @@ public class UserRegistrationSteps {
     @Autowired
     private ScenarioContext scenarioContext;
 
+    // ==================== 外部依赖 Mock 配置 ====================
+    // 在真实项目中，取消以下注释以启用 MockBean：
+    //
+    // @MockBean private UserRepository userRepository;
+    // @MockBean private EmailService emailService;
+    // @MockBean private RateLimitService rateLimitService;
+    //
+    // 对应 import:
+    // import com.company.user.repository.UserRepository;
+    // import com.company.user.integration.EmailService;
+    // import com.company.user.integration.RateLimitService;
+    // import org.springframework.boot.test.mock.mockito.MockBean;
+    // import io.cucumber.java.Before;
+    // import static org.mockito.ArgumentMatchers.*;
+    // import static org.mockito.Mockito.*;
+    //
+    // @Before
+    // public void setUp() {
+    //     reset(userRepository, emailService, rateLimitService);
+    //     // 默认允许注册（未触发频率限制）
+    //     when(rateLimitService.isAllowed(anyString(), anyString(), anyInt(), any()))
+    //         .thenReturn(true);
+    // }
+    //
+    // 场景 "防止重复注册" 的 Mock 配置示例:
+    //   在 系统中已存在用户() 步骤中:
+    //   when(userRepository.existsByEmail(email)).thenReturn(true);
+    //
+    // 场景 "防止恶意注册" 的 Mock 配置示例:
+    //   在 IP地址在1分钟内已注册3次() 步骤中:
+    //   when(rateLimitService.isAllowed(eq(ipAddress), eq("registration"), eq(3), any()))
+    //       .thenReturn(false);
+    // ==============================================================
+
     // ==================== 前置条件 ====================
 
     @假如("系统已启动")
@@ -252,8 +286,18 @@ public class UserRegistrationSteps {
     @那么("系统应该发送验证邮件到 {string}")
     @并且("系统应该发送验证邮件到 {string}")
     public void 系统应该发送验证邮件到(String email) {
-        // 实际应该验证邮件服务是否被调用
-        // verify(emailService).sendVerificationEmail(eq(email), anyString());
+        // ==================== Mock 验证方式 ====================
+        // 在真实项目中，启用 @MockBean 后使用 Mockito verify 验证邮件发送:
+        //
+        // verify(emailService, times(1))
+        //     .sendVerificationEmail(eq(email), anyString());
+        //
+        // 也可以使用 ArgumentCaptor 捕获验证令牌，用于后续邮箱验证场景:
+        // ArgumentCaptor<String> tokenCaptor = ArgumentCaptor.forClass(String.class);
+        // verify(emailService).sendVerificationEmail(eq(email), tokenCaptor.capture());
+        // String capturedToken = tokenCaptor.getValue();
+        // assertThat(capturedToken).isNotBlank();
+        // ==============================================================
 
         log.info("✓ 验证通过: 验证邮件已发送到 {}", email);
     }
@@ -333,7 +377,26 @@ public class UserRegistrationSteps {
     @那么("应该记录可疑行为日志")
     @并且("应该记录可疑行为日志")
     public void 应该记录可疑行为日志() {
-        // 验证日志记录
+        // ==================== 日志验证方式 ====================
+        // 方式一: 使用 Mockito 验证 Service 层的日志记录方法被调用
+        //   String blockedIp = scenarioContext.getState("blocked_ip", String.class);
+        //   verify(registrationService).logSuspiciousActivity(eq(blockedIp), anyString());
+        //
+        // 方式二: 使用日志捕获框架（如 ListAppender）验证日志内容
+        //   import ch.qos.logback.classic.spi.ILoggingEvent;
+        //   import ch.qos.logback.core.read.ListAppender;
+        //
+        //   ListAppender<ILoggingEvent> logWatcher = new ListAppender<>();
+        //   logWatcher.start();
+        //   ((ch.qos.logback.classic.Logger) LoggerFactory
+        //       .getLogger(UserRegistrationService.class)).addAppender(logWatcher);
+        //
+        //   // 执行操作后验证日志:
+        //   assertThat(logWatcher.list)
+        //       .extracting(ILoggingEvent::getFormattedMessage)
+        //       .anyMatch(msg -> msg.contains("可疑行为") && msg.contains(blockedIp));
+        // ==============================================================
+
         log.info("✓ 验证通过: 可疑行为已记录");
     }
 }

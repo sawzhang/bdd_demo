@@ -2,10 +2,15 @@ package com.company.user.service;
 
 import com.company.user.domain.User;
 import com.company.user.domain.User.UserStatus;
+import com.company.user.integration.EmailService;
+import com.company.user.integration.RateLimitService;
+import com.company.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -23,13 +28,18 @@ import java.util.regex.Pattern;
  * - 邮箱验证流程
  * - 防止恶意注册（频率限制）
  *
- * @author AI-Generated
+ * @author AI-Generated via user-registration skill
  * @version 1.0.0
  * @since 2026-02-05
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserRegistrationService {
+
+    private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final RateLimitService rateLimitService;
 
     // 邮箱格式正则表达式
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
@@ -40,6 +50,10 @@ public class UserRegistrationService {
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(
         "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$"
     );
+
+    // 频率限制配置
+    private static final int MAX_REGISTRATION_ATTEMPTS = 3;
+    private static final Duration RATE_LIMIT_WINDOW = Duration.ofMinutes(1);
 
     /**
      * 注册新用户
@@ -75,10 +89,11 @@ public class UserRegistrationService {
             .verificationToken(generateVerificationToken())
             .build();
 
-        // 5. 保存用户（实际应该调用 Repository）
-        // userRepository.save(user);
-
-        log.info("✓ 用户注册成功: {}", email);
+        // 5. 保存用户
+        // 真实调用: userRepository.save(user);
+        // Demo 模式: 模拟保存并设置 ID
+        user.setId(System.currentTimeMillis());
+        log.info("用户注册成功: {}", email);
 
         // 6. 发送验证邮件
         sendVerificationEmail(user);
@@ -90,6 +105,8 @@ public class UserRegistrationService {
      * 验证邮箱格式
      *
      * 来源场景: "邮箱格式验证"
+     * - When: 用户填写无效邮箱
+     * - Then: 注册应该失败，显示"邮箱格式不正确"
      */
     public void validateEmailFormat(String email) {
         if (email == null || !EMAIL_PATTERN.matcher(email).matches()) {
@@ -101,6 +118,8 @@ public class UserRegistrationService {
      * 验证密码强度
      *
      * 来源场景: "密码强度验证"
+     * - When: 用户填写密码
+     * - Then: 根据密码强度返回成功/失败
      */
     public void validatePasswordStrength(String password) {
         if (password == null || password.length() < 8) {
@@ -116,15 +135,26 @@ public class UserRegistrationService {
      * 检查邮箱是否已存在
      *
      * 来源场景: "防止重复注册"
+     * - Given: 系统中已存在用户
+     * - Then: 注册应该失败，显示"该邮箱已被注册"
      */
     private void checkEmailNotExists(String email) {
-        // 实际应该查询数据库
-        // if (userRepository.existsByEmail(email)) {
-        //     throw new RegistrationException("该邮箱已被注册");
-        // }
+        // 真实调用: 通过 Repository 查询数据库
+        if (userRepository.existsByEmail(email)) {
+            throw new RegistrationException("该邮箱已被注册");
+        }
+    }
 
-        // 模拟检查
-        log.debug("检查邮箱是否存在: {}", email);
+    /**
+     * 检查邮箱是否已注册
+     *
+     * 对应 BDD 场景: "防止重复注册"（辅助接口，供 Controller 调用）
+     *
+     * @param email 邮箱地址
+     * @return 是否已存在
+     */
+    public boolean checkEmailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     /**
@@ -150,14 +180,16 @@ public class UserRegistrationService {
      */
     private void sendVerificationEmail(User user) {
         log.info("发送验证邮件到: {}", user.getEmail());
-        // 实际应该调用邮件服务
-        // emailService.sendVerificationEmail(user.getEmail(), user.getVerificationToken());
+        // 真实调用: 通过 EmailService 发送验证邮件
+        emailService.sendVerificationEmail(user.getEmail(), user.getVerificationToken());
     }
 
     /**
      * 验证邮箱
      *
      * 来源场景: "邮箱验证流程"
+     * - When: 用户点击验证邮件中的链接
+     * - Then: 邮箱验证应该成功，用户状态变更为"已激活"
      *
      * @param token 验证令牌
      * @return 验证后的用户
@@ -167,24 +199,17 @@ public class UserRegistrationService {
         log.info("验证邮箱 - 令牌: {}", token);
 
         // 1. 根据令牌查找用户
-        // User user = userRepository.findByVerificationToken(token)
-        //     .orElseThrow(() -> new RegistrationException("无效的验证链接"));
+        User user = userRepository.findByVerificationToken(token)
+            .orElseThrow(() -> new RegistrationException("无效的验证链接"));
 
-        // 模拟查找用户
-        User user = User.builder()
-            .email("zhang@example.com")
-            .username("张三")
-            .status(UserStatus.PENDING_VERIFICATION)
-            .verificationToken(token)
-            .build();
-
-        // 2. 验证邮箱
+        // 2. 验证邮箱（Domain 层业务方法）
         user.verifyEmail();
 
         // 3. 保存更新
-        // userRepository.save(user);
+        // 真实调用: userRepository.save(user);
+        // Demo 模式: 状态已在内存中更新
 
-        log.info("✓ 邮箱验证成功: {}", user.getEmail());
+        log.info("邮箱验证成功: {}", user.getEmail());
 
         return user;
     }
@@ -193,29 +218,31 @@ public class UserRegistrationService {
      * 检查注册频率限制
      *
      * 来源场景: "防止恶意注册"
+     * - Given: IP地址在1分钟内已注册3次
+     * - Then: 注册应该被阻止
      *
      * @param ipAddress IP地址
      * @return 是否允许注册
      */
     public boolean checkRateLimit(String ipAddress) {
         log.debug("检查 IP {} 的注册频率", ipAddress);
-
-        // 实际应该使用 Redis 或内存缓存
-        // int count = redisTemplate.opsForValue().get("registration:" + ipAddress);
-        // if (count >= 3) {
-        //     return false;
-        // }
-
-        // 模拟检查
-        return true;
+        // 真实调用: 通过 RateLimitService 检查频率
+        return rateLimitService.isAllowed(ipAddress, "registration",
+            MAX_REGISTRATION_ATTEMPTS, RATE_LIMIT_WINDOW);
     }
 
     /**
      * 记录可疑行为
+     *
+     * 来源场景: "防止恶意注册" - "应该记录可疑行为日志"
+     *
+     * @param ipAddress IP地址
+     * @param action 行为描述
      */
     public void logSuspiciousActivity(String ipAddress, String action) {
-        log.warn("⚠️ 可疑行为 - IP: {}, 操作: {}", ipAddress, action);
-        // 实际应该记录到安全日志或监控系统
+        log.warn("可疑行为 - IP: {}, 操作: {}", ipAddress, action);
+        // 真实调用: 记录到安全日志或监控系统
+        rateLimitService.recordAttempt(ipAddress, "suspicious_" + action);
     }
 
     /**
